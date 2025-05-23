@@ -1,0 +1,67 @@
+.tasklist-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.add-task-link {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 8px 18px;
+    background: #1976d2;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.add-task-link:hover {
+    background: #125ea8;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.task-table th, .task-table td {
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.task-table th {
+    background: #e3eaf6;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.task-table tbody tr:hover {
+    background: #f0f4fa;
+}
+
+.task-row {
+    transition: background 0.2s;
+}
+
+.task-row:hover {
+    background: #f0f4fa;
+}
+
+.task-cell {
+    padding: 12px 18px;
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+    font-weight: 600;
+}

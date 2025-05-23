@@ -20,11 +20,10 @@ function ContextAPIProvider({children}){
         .catch(error => console.error(error))
     }, [])
 
-    //Mostro i dati in consolle
-    console.log(tasks)
+    
 
     return(
-        <ContextAPI.Provider value={tasks} >
+        <ContextAPI.Provider value={[tasks]} >
             {children}
         </ContextAPI.Provider>
     )
