@@ -43,11 +43,17 @@ export default function AddTaskList(){
                         required
                         placeholder="Inserisci il titolo"
                     />
-                    {title.trim() && 
-            <p style={{color : isTitleValid ? "green" : "red"}}>
-              {isTitleValid ? "Titolo valido" : "Il campo non può essere vuoto e non può contenere caratteri speciali."}
-              </p>
-           }
+                    {!isTitleValid &&
+                        <p style={{color : !isTitleValid  && "red"}}>
+                            {!isTitleValid && "Il campo non può essere vuoto e non può contenere caratteri speciali."}
+                        </p>  
+                    }
+
+                    {isTitleValid &&
+                        <p style={{color : isTitleValid && "green"}}>
+                            {isTitleValid && "Titolo valido!" }
+                        </p>  
+                    }
                 </label>
                 <label>
                     Descrizione:
