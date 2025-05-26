@@ -35,9 +35,10 @@ export default function TaskList(){
                         </tr>
                     </thead>
                     <tbody>
-                        {tasks?.map((task, index) => (
+                        {tasks?.map((task) => (
                             <TaskRow 
-                            key={index}
+                            key={task.id}
+                            id={task.id}
                             title= {task.title}
                             status = {task.status}
                             createdAt= {task.createdAt}
