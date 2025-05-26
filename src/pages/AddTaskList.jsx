@@ -36,16 +36,17 @@ export default function AddTaskList(){
     const status = statusRef.current.value
 
     if(!isTitleValid  || description.trim().length === 0 || status.trim().length === 0){
-        
-        throw new Error( "I campi non possono essere vuoti e non possono contenere caratteri speciali." );
-        
+        alert("Per favore, compila tutti i campi correttamente.");
+        return;
     }
 
-    addTask({
-        title,
-        status,
-        description
-    });
+    addTask({title, status, description});
+
+    //Resetto i campi
+    setTitle("");
+    descriptionRef.current.value = "";
+    statusRef.current.value = "";
+
    }
     
       
@@ -87,7 +88,8 @@ export default function AddTaskList(){
                 </label>
                 <label>
                     Stato:
-                    <select ref={statusRef} >
+                    <select ref={statusRef} defaultValue="" >
+                        <option value="" disabled   >Seleziona uno stato</option>
                         <option value="To do">To do</option>
                         <option value="Doing">Doing</option>
                         <option value="Done">Done</option>

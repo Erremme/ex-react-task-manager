@@ -26,20 +26,21 @@ function UseTask(){
         .then((res) => {
            
             // Mi prendo i dati dalla risposta
-            const {success, task} = res.data;
-            
+            const {success, task, } = res.data;
 
             // Se la risposta è positiva, aggiorno lo stato
             if(success === true){
                 setTasks((current) => [...current, task])
-
-                //Altrimentiualmente lancio un errore
-            }else{
-
-                throw new Error( "Errore nell'aggiunta della task");
+                alert(`Task aggiunta con successo: ${task.title}`);
+            }else {
+                alert(`Errore: ${error.response?.data?.message }`);
             }
         })
-        .catch(error => console.error(error))
+        .catch(error =>{
+            const message = error.response?.data?.message || "Errore di rete o dati non validi";
+            alert(`Errore: ${message}`);
+            console.error(error)
+        } )
 
     }
     
