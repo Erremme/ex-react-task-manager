@@ -1,5 +1,25 @@
+.tasklist-header {
+    text-align: center;
+    margin-bottom: 28px;
+    padding-top: 10px;
+}
+
+.tasklist-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1976d2;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.tasklist-subtitle {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 0;
+}
+
 .tasklist-container {
-    max-width: 900px;
+    max-width: 800px;
     margin: 40px auto;
     padding: 24px;
     background: #f9fafb;
@@ -50,7 +70,6 @@
 .task-table tbody tr:hover {
     background: #f0f4fa;
 }
-
 .task-row {
     transition: background 0.2s;
 }

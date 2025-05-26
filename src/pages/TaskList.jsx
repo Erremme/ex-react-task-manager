@@ -1,16 +1,27 @@
+// Ract-router-dom
 import { NavLink } from "react-router-dom"
+//Context
 import { useContextAPI } from "../Context/ContextAPI"
+//Components
 import TaskRow from "../components/TaskRow"
 
 
 
 
 export default function TaskList(){
-    const [tasks] = useContextAPI()
+    //Importo il value del context
+    const {tasks} = useContextAPI()
 
-    
     return(
+
+
         <div className="tasklist-container" >
+
+            <header className="tasklist-header">
+                <h1 className="tasklist-title">Task Manager</h1>
+                <p className="tasklist-subtitle">Visualizza e gestisci le tue attività</p>
+            </header>
+           
 
               <NavLink className="add-task-link" to="AddTask">Aggiungi una task</NavLink>
 
@@ -36,8 +47,8 @@ export default function TaskList(){
                     </tbody>
                 </table>
               </div>
-            
-            
+           
         </div>
+         
     )
 }

@@ -1,29 +1,20 @@
-import { createContext , useState , useContext, useEffect } from "react";
+import { createContext ,  useContext,  } from "react";
+
+//Custom HOOK
+import UseTasks from "../customHooks/UseTasks";
 
 //Creo il contesto
 const ContextAPI = createContext()
 
 //Provider che fa la chiamata
 function ContextAPIProvider({children}){
-
-    //Stato per salvare i dati della chiamata
-    const [tasks , setTasks] = useState([])
     
-    //Variabile globale che contiene l url
-    const Url = import.meta.env.VITE_API_URL
-
-    //Faccio la chiama e salvo i dati
-    useEffect(() => {
-        fetch(`${Url}/tasks`)
-        .then(res => res.json()) 
-        .then(data => setTasks(data) )
-        .catch(error => console.error(error))
-    }, [])
-
+    //Destrutturazione dei valori dal custom Hook
+    const {tasks , addTask , removeTask , updateTask}= UseTasks()
     
-
+  
     return(
-        <ContextAPI.Provider value={[tasks]} >
+        <ContextAPI.Provider value={{tasks , addTask , removeTask , updateTask}} >
             {children}
         </ContextAPI.Provider>
     )
