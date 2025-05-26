@@ -1,6 +1,10 @@
 //Hooks di react
 import { useState, useEffect } from "react";
 
+//Axios per le richieste http
+import axios from "axios";
+
+
 function UseTask(){
 
     //Variabile di stato per salvare i dati
@@ -11,15 +15,32 @@ function UseTask(){
 
     //Recupero i dati dal server
     useEffect(()=> {
-        fetch(`${url}/tasks`)
-        .then(res => res.json())
-        .then(data => setTasks(data))
+        axios.get(`${url}/tasks`)
+        .then(res => setTasks(res.data))
         .catch(error => console.error(error))
     },[])
 
     //funzione per aggiungere una task
-    function addTask() {
-        console.log("Aggiungo una Task")
+    function addTask({title, status , description}) {
+        axios.post(`${url}/tasks`,{ title, status, description })
+        .then((res) => {
+           
+            // Mi prendo i dati dalla risposta
+            const {success, task} = res.data;
+            
+
+            // Se la risposta è positiva, aggiorno lo stato
+            if(success === true){
+                setTasks((current) => [...current, task])
+
+                //Altrimentiualmente lancio un errore
+            }else{
+
+                throw new Error( "Errore nell'aggiunta della task");
+            }
+        })
+        .catch(error => console.error(error))
+
     }
     
     //funzione per rimuovere una task

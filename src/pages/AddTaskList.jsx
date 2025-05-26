@@ -4,9 +4,16 @@ import { NavLink } from "react-router-dom";
 //React HOOKS
 import { useState , useRef, useMemo } from "react";
 
+//Context
+import {useContextAPI} from "../Context/ContextAPI";
+
 export default function AddTaskList(){
     //Variabile di stato per input controllato
     const [title , setTitle] = useState("");
+
+    const { addTask } = useContextAPI();
+
+
 
     //Variabili per input non trollati
     const descriptionRef = useRef(null);
@@ -21,14 +28,27 @@ export default function AddTaskList(){
       return charValid && title.trim().length > 0 
     },[title]);
 
-    //Funzione per inviare il form
-    function handleSubmit(e) {
-        e.preventDefault()
-        const description = descriptionRef.current.value
-        const status = statusRef.current.value
+   function handleSubmit(e) {
+    e.preventDefault();
+    
+    //Prendo i valori dagli input non controllati
+    const description = descriptionRef.current.value
+    const status = statusRef.current.value
 
-        console.log({title , description, status})
+    if(!isTitleValid  || description.trim().length === 0 || status.trim().length === 0){
+        
+        throw new Error( "I campi non possono essere vuoti e non possono contenere caratteri speciali." );
+        
     }
+
+    addTask({
+        title,
+        status,
+        description
+    });
+   }
+    
+      
     return(
          <div className="addtask-container">
             <NavLink className="back-link" to="/">← Torna alla home</NavLink>
@@ -43,6 +63,7 @@ export default function AddTaskList(){
                         required
                         placeholder="Inserisci il titolo"
                     />
+
                     {!isTitleValid &&
                         <p style={{color : !isTitleValid  && "red"}}>
                             {!isTitleValid && "Il campo non può essere vuoto e non può contenere caratteri speciali."}
