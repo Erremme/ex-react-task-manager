@@ -6,7 +6,7 @@ export default function Moda({title ,content,show , onClose, onConfirm ,confirmT
       <div className={`modal ${show ? 'show' : ''}`}>
          <div className="modal-content">
             <h2>{title}</h2>
-            <p>{content}</p>
+            <div>{content}</div>
             <div className="modal-actions">
                <button onClick={onClose}>Annulla</button>
                <button onClick={onConfirm}>{confirmText}</button>

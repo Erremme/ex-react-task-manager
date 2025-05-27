@@ -79,8 +79,23 @@ function UseTask(){
     }
     
     //funzione per modificare una task
-    function updateTask() {
-        console.log("Modifico una Task")
+    function updateTask(id ,{title, status , description}) {
+        axios.put(`${url}/tasks/${id}`, { title, status, description })
+        .then((res) => {
+            const {success, message} = res.data;
+            if(success === true){
+                alert(`Task aggiornata con successo`);
+                fetchTasks();
+                navigate("/");
+            }else {
+                alert(`Errore: ${message}`);
+            }
+        })
+        .catch(error => {
+            const message = error.response?.data?.message || "Errore di rete o dati non validi";
+            alert(`Errore: ${message}`);
+            console.error(error)
+        })
     }
     
     return {tasks , addTask , removeTask , updateTask}

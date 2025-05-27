@@ -6,18 +6,21 @@ import { useContextAPI } from "../Context/ContextAPI";
 
 //React-router-dom
 import { NavLink } from "react-router-dom";
+//Hooks
+import { useState } from "react";
 
 //Libreria per formattare la data
 import dayjs from "dayjs";
 
 //Component
 import Modal from "../components/Modal";
-import { useState } from "react";
+import EditTaskModal from "../components/EditTaskModal";
+
 
 export default function TaskDetail() {
 
     //Recupero i dati dal context
-    const { tasks , removeTask } = useContextAPI();
+    const { tasks , removeTask, updateTask } = useContextAPI();
 
    //Recupero l'id dalla url
    const {id}= useParams();
@@ -29,6 +32,8 @@ export default function TaskDetail() {
     //Variabile per gestire la visibilità del modal
     const [showModal, setShowModal] = useState(false);
 
+    const [showEditModal, setShowEditModal] = useState(false);
+
     return(
             <div className="taskdetail-container">
             <Modal
@@ -38,6 +43,17 @@ export default function TaskDetail() {
                 onClose={() => setShowModal(false)}
                 onConfirm={() => removeTask(id)}
                 confirmText="Rimuovi"/>
+
+            <EditTaskModal 
+            show={showEditModal}
+            onClose={() => setShowEditModal(false)}
+            task={task}
+            onSave={({title , status, description}) => updateTask(id,{title, status, description})}
+   
+               
+            
+
+            />
             <NavLink className="back-link" to="/">← Torna alla lista</NavLink>
             <div className="taskdetail-card">
                 <h2 className="taskdetail-title">{task.title}</h2>
@@ -55,7 +71,11 @@ export default function TaskDetail() {
                 </div>
 
             </div>
+            <div className="btn-container">
+            <button onClick={() => setShowEditModal(true)} className="edit-task-btn">Modifica Task</button>
             <button onClick={() => setShowModal(true)} className="remove-task-btn">Rimuovi Task</button>
+            
+            </div>
         </div>
     )
 
