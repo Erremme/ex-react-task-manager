@@ -12,17 +12,19 @@ import { ContextAPIProvider } from "./Context/ContextAPI"
 export default function App(){
 
   return(
-    <ContextAPIProvider>
+    
 
     <BrowserRouter>
+    <ContextAPIProvider>
       <Routes>
         <Route path="/" element={<TaskList />}/>
         <Route path="AddTask" element={<AddTaskList />} />
         <Route path="task/:id" element={<TaskDetail />} />
        
       </Routes>
+       </ContextAPIProvider>
     </BrowserRouter>
     
-    </ContextAPIProvider>
+   
   )
 }

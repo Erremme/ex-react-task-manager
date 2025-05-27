@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 export default function TaskDetail() {
 
     //Recupero i dati dal context
-    const { tasks } = useContextAPI();
+    const { tasks , removeTask } = useContextAPI();
 
    //Recupero l'id dalla url
    const {id}= useParams();
@@ -44,7 +44,7 @@ export default function TaskDetail() {
                 </div>
 
             </div>
-            <button onClick={(e) => console.log("Articolo rimosso")} className="remove-task-btn">Rimuovi Task</button>
+            <button onClick={() => removeTask(id)} className="remove-task-btn">Rimuovi Task</button>
         </div>
     )
 
