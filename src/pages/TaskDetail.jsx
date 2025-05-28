@@ -1,5 +1,6 @@
 // UseParams
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //Context
 import { useContextAPI } from "../Context/ContextAPI";
@@ -25,6 +26,8 @@ export default function TaskDetail() {
    //Recupero l'id dalla url
    const {id}= useParams();
 
+   const navigate = useNavigate()
+
     //Cerco la task con l'id corrispondente
 
     const task = tasks.find((task) => Number(task.id) === Number(id));
@@ -34,26 +37,32 @@ export default function TaskDetail() {
 
     const [showEditModal, setShowEditModal] = useState(false);
 
+    const handleDelete = async () => {
+     try{
+        await  removeTask(task.id)
+        alert("Task eliminata con successo")
+        navigate("/")
+     }catch(error){
+      alert(error.message)
+     }
+    }
+
+    const handleUpdate = async  (updatedTask) =>  {
+        try {
+            await updateTask(updatedTask)
+        alert("Task Modificata con successo")
+        setShowEditModal(false)
+
+        }catch(error){
+            alert(error.message)
+        }
+
+    }
+
     return(
             <div className="taskdetail-container">
-            <Modal
-                title="Rimuovi Task"
-                content="Sei sicuro di voler rimuovere questa task?"
-                show={showModal}
-                onClose={() => setShowModal(false)}
-                onConfirm={() => removeTask(id)}
-                confirmText="Rimuovi"/>
-
-            <EditTaskModal 
-            show={showEditModal}
-            onClose={() => setShowEditModal(false)}
-            task={task}
-            onSave={({title , status, description}) => updateTask(id,{title, status, description})}
-   
-               
             
-
-            />
+            
             <NavLink className="back-link" to="/">← Torna alla lista</NavLink>
             <div className="taskdetail-card">
                 <h2 className="taskdetail-title">{task.title}</h2>
@@ -74,6 +83,20 @@ export default function TaskDetail() {
             <div className="btn-container">
             <button onClick={() => setShowEditModal(true)} className="edit-task-btn">Modifica Task</button>
             <button onClick={() => setShowModal(true)} className="remove-task-btn">Rimuovi Task</button>
+              <Modal
+                title="Rimuovi Task"
+                content="Sei sicuro di voler rimuovere questa task?"
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={ handleDelete}
+                confirmText="Rimuovi"/>
+
+                <EditTaskModal 
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                task={task}
+                onSave={handleUpdate}
+            />
             
             </div>
         </div>

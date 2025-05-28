@@ -11,13 +11,11 @@ export default function AddTaskList(){
     //Variabile di stato per input controllato
     const [title , setTitle] = useState("");
 
-    const { addTask } = useContextAPI();
-
-
-
     //Variabili per input non trollati
     const descriptionRef = useRef(null);
     const statusRef = useRef(null);
+
+    const { addTask } = useContextAPI();
     
     //Simboli per verificare se il campo è corretto
     const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/`;
@@ -28,24 +26,34 @@ export default function AddTaskList(){
       return charValid && title.trim().length > 0 
     },[title]);
 
-   function handleSubmit(e) {
+   async function handleSubmit (e) {
     e.preventDefault();
     
-    //Prendo i valori dagli input non controllati
-    const description = descriptionRef.current.value
-    const status = statusRef.current.value
-
-    if(!isTitleValid  || description.trim().length === 0 || status.trim().length === 0){
-        alert("Per favore, compila tutti i campi correttamente.");
+    if(!isTitleValid ){;
         return;
     }
 
-    addTask({title, status, description});
+    const newTask = {
+        title : title.trim(),
+        description : descriptionRef.current.value,
+        status : statusRef.current.value
+    }
 
-    //Resetto i campi
-    setTitle("");
-    descriptionRef.current.value = "";
-    statusRef.current.value = "";
+    try {
+     await addTask({newTask})
+     alert("Task aggiunta con successo!")
+     setTitle("")
+     descriptionRef.current.value = ""
+     statusRef.current.value = ""
+
+    }catch(error){
+     alert(error.message)
+    }
+
+
+    
+    
+
 
    }
     
@@ -88,7 +96,7 @@ export default function AddTaskList(){
                 </label>
                 <label>
                     Stato:
-                    <select ref={statusRef} defaultValue="" >
+                    <select ref={statusRef} defaultValue="To do" >
                         <option value="" disabled   >Seleziona uno stato</option>
                         <option value="To do">To do</option>
                         <option value="Doing">Doing</option>

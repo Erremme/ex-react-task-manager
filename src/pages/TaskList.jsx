@@ -1,5 +1,3 @@
-// Ract-router-dom
-import { NavLink } from "react-router-dom"
 
 //HOOKS
 import { useCallback, useState } from "react"
@@ -14,6 +12,16 @@ import TaskRow from "../components/TaskRow"
 
 const statusOrder = { "To do": 0, "Doing": 1, "Done": 2 };
 
+ //Funzione debounce
+     function debounce (callback , delay){
+        let timer;
+        return (value) => {
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                callback(value)
+            }, delay)
+        }
+     }
  
 
 export default function TaskList(){
@@ -25,19 +33,15 @@ export default function TaskList(){
     const [sortOrder, setSortOrder] = useState(1)
 
     //Stati per la ricerca
-    const searchQueryRef = useRef()
-    const [debouncedQuery, setDebouncedQuery] = useState("");
-    const debounceTimer = useRef(null);
+  
+    const [searchQuery, setSearchQuery] = useState("");
+   
 
-    //Funzione debounce
-    const handleSearchChange = useCallback((e) => {
-    const value = searchQueryRef.current.value;
-    
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-        setDebouncedQuery(value);
-    }, 500);
-}, []);
+    const debounceSetSearchQuery = useCallback( debounce(setSearchQuery, 500),[])
+
+   
+
+   
     
     //Funzione di ordinamento
     const handleOrder = (column) => {
@@ -50,24 +54,14 @@ export default function TaskList(){
     }
 
 
-    
 
-   
-
-
-
-    const sortedTask = useMemo(() =>{
-        let filtered ;
-        if(debouncedQuery !== ""){
-           filtered = tasks.filter((task) => 
-            task.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+    const FilteredAndSortedTask = useMemo(() =>{
+        
+        return [...tasks]
+        .filter((task) => 
+            task.title.toLowerCase().includes(searchQuery.toLowerCase())
             )
-        }else{
-            filtered = tasks
-        }
-        
-        
-        return filtered.sort((a,b) => {
+        .sort((a,b) => {
          let result = 0;
          if(sortBy === "title"){
             result = a.title.localeCompare(b.title)
@@ -79,7 +73,7 @@ export default function TaskList(){
 
          return result * sortOrder
         })
-    } , [debouncedQuery,tasks , sortBy , sortOrder])
+    } , [searchQuery,tasks , sortBy , sortOrder])
 
 
 
@@ -95,12 +89,10 @@ export default function TaskList(){
 
                <div className="search-button-container">
 
-                
-
                 <input type="text"
                 placeholder="Cerca.."
-                ref={searchQueryRef}
-                onChange={handleSearchChange}
+                
+                onChange={(e) =>debounceSetSearchQuery(e.target.value)}
                 />
                 
                </div>
@@ -117,7 +109,7 @@ export default function TaskList(){
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedTask?.map((task) => (
+                        {FilteredAndSortedTask?.map((task) => (
                             <TaskRow 
                             key={task.id}
                             id={task.id}

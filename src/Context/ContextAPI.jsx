@@ -1,7 +1,7 @@
 import { createContext ,  useContext,  } from "react";
 
 //Custom HOOK
-import UseTasks from "../customHooks/UseTasks";
+import useTasks from "../customHooks/useTasks";
 
 //Creo il contesto
 const ContextAPI = createContext()
@@ -10,7 +10,7 @@ const ContextAPI = createContext()
 function ContextAPIProvider({children}){
     
     //Destrutturazione dei valori dal custom Hook
-    const {tasks , addTask , removeTask , updateTask}= UseTasks()
+    const {tasks , addTask , removeTask , updateTask}= useTasks()
     
   
     return(

@@ -1,7 +1,7 @@
 
 import ReactDOM from 'react-dom';
 
-export default function Moda({title ,content,show , onClose, onConfirm ,confirmText = "Conferma"}){
+export default function Modal({title ,content,show , onClose, onConfirm ,confirmText = "Conferma"}){
    return ReactDOM.createPortal (
       <div className={`modal ${show ? 'show' : ''}`}>
          <div className="modal-content">

@@ -15,13 +15,13 @@ export default function App(){
     
 
     <BrowserRouter>
-
+       <ContextAPIProvider>
       <nav>
           <NavLink to="/">Lista Task</NavLink>
           <NavLink to="AddTask">Aggiungi Task</NavLink>
 
       </nav>
-    <ContextAPIProvider>
+    
       <Routes>
         <Route path="/" element={<TaskList />}/>
         <Route path="AddTask" element={<AddTaskList />} />

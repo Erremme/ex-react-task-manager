@@ -16,13 +16,15 @@ export default function EditTaskModal({show ,onClose, task, onSave }) {
     //Funzione per gestire il submit del form
     const handleSubmit = (e) => {   
         e.preventDefault();
-        onSave({
-        ...task,
-        title,
-        description,
-        status
-    });
-        onClose();
+
+        const updatedTask = {
+        id : task.id,
+        title: title,
+        description : description,
+        status :status
+        }
+        onSave(updatedTask);
+        
     }
     
 //Componente form da passare al modal
@@ -56,7 +58,7 @@ export default function EditTaskModal({show ,onClose, task, onSave }) {
                                     <option value="Done">Done</option>
                                 </select>
                             </div>
-                           <button type="submit" style={{ display: "none" }}>Salva</button>
+                           
                             
                         </form>
   )
