@@ -52,7 +52,7 @@ export default function AddTaskList(){
       
     return(
          <div className="addtask-container">
-            <NavLink className="back-link" to="/">← Torna alla home</NavLink>
+            
             <form className="addtask-form" onSubmit={handleSubmit}>
                 <h2>Aggiungi una nuova Task</h2>
                 <label>

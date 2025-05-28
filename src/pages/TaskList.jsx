@@ -95,7 +95,7 @@ export default function TaskList(){
 
                <div className="search-button-container">
 
-                <NavLink className="add-task-link" to="AddTask">Aggiungi una task</NavLink>
+                
 
                 <input type="text"
                 placeholder="Cerca.."

@@ -1,5 +1,5 @@
 //React-router-dom
-import { BrowserRouter ,Route , Routes } from "react-router-dom"
+import { BrowserRouter ,Route , Routes , NavLink} from "react-router-dom"
 //Component
 import TaskList from "./pages/TaskList"
 import AddTaskList from "./pages/AddTaskList"
@@ -15,6 +15,12 @@ export default function App(){
     
 
     <BrowserRouter>
+
+      <nav>
+          <NavLink to="/">Lista Task</NavLink>
+          <NavLink to="AddTask">Aggiungi Task</NavLink>
+
+      </nav>
     <ContextAPIProvider>
       <Routes>
         <Route path="/" element={<TaskList />}/>
