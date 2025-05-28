@@ -1,16 +1,51 @@
 // Ract-router-dom
 import { NavLink } from "react-router-dom"
+//HOOKS
+import { useState } from "react"
+import { useMemo } from "react"
 //Context
 import { useContextAPI } from "../Context/ContextAPI"
 //Components
 import TaskRow from "../components/TaskRow"
 
-
+const statusOrder = { "To do": 0, "Doing": 1, "Done": 2 };
 
 
 export default function TaskList(){
     //Importo il value del context
     const {tasks} = useContextAPI()
+
+    //Stati per l'ordinamento delle task
+    const [sortBy ,setSortBy] = useState("createdAt")
+    const [sortOrder, setSortOrder] = useState(1)
+    
+    //Funzione di ordinamento
+    const handleOrder = (column) => {
+      if(sortBy === column){
+        setSortOrder((prev) => prev * -1)
+      }else{
+        setSortBy(column)
+        setSortOrder(1)
+      }
+    }
+
+    const sortedTask = useMemo(() =>{
+        
+        return tasks.sort((a,b) => {
+         let result = 0;
+         if(sortBy === "title"){
+            result = a.title.localeCompare(b.title)
+         }else if(sortBy === "status") {
+           result = statusOrder[a.status] - statusOrder[b.status]
+         }else if(sortBy === "createdAt"){
+             result = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+         }
+
+         return result * sortOrder
+        })
+    } , [tasks , sortBy , sortOrder])
+
+
 
     return(
 
@@ -29,13 +64,13 @@ export default function TaskList(){
                 <table className="task-table">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Stato</th>
-                            <th>Data di Creazione</th>
+                            <th onClick={() =>handleOrder("title")} >Nome</th>
+                            <th onClick={() =>handleOrder("status")}>Stato</th>
+                            <th onClick={() => handleOrder("createdAt")}>Data di Creazione</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {tasks?.map((task) => (
+                        {sortedTask?.map((task) => (
                             <TaskRow 
                             key={task.id}
                             id={task.id}
