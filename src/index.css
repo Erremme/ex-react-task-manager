@@ -19,17 +19,42 @@
 }
 
 .tasklist-container {
-    max-width: 800px;
+    max-width: 1200px;
+    height: 100vh;
     margin: 40px auto;
-    padding: 24px;
+    padding: 50px;
     background: #f9fafb;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.07);
 }
 
+.search-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+.search-button-container input[type="text"] {
+    flex: 1;
+    max-width: 300px;
+    padding: 8px 18px;
+    border: 1.5px solid #bdbdbd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #f7fafd;
+    transition: border 0.2s;
+}
+
+.search-button-container input[type="text"]:focus {
+    border: 1.5px solid #1976d2;
+    outline: none;
+    background: #fff;
+}
+
 .add-task-link {
     display: inline-block;
-    margin-bottom: 18px;
+   
     padding: 8px 18px;
     background: #1976d2;
     color: #fff;
@@ -79,7 +104,7 @@
 }
 
 .task-cell {
-    padding: 12px 18px;
+    padding: 14px 28px;
     border: 1px solid #e0e0e0;
     font-size: 1rem;
     font-weight: 600;

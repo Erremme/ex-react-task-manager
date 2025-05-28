@@ -93,15 +93,19 @@ export default function TaskList(){
                 <p className="tasklist-subtitle">Visualizza e gestisci le tue attività</p>
             </header>
 
-               <div>
+               <div className="search-button-container">
+
+                <NavLink className="add-task-link" to="AddTask">Aggiungi una task</NavLink>
+
                 <input type="text"
                 placeholder="Cerca.."
                 ref={searchQueryRef}
                 onChange={handleSearchChange}
                 />
+                
                </div>
 
-              <NavLink className="add-task-link" to="AddTask">Aggiungi una task</NavLink>
+              
 
               <div className="table-wrapper" >
                 <table className="task-table">
