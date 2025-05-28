@@ -1,15 +1,20 @@
 // Ract-router-dom
 import { NavLink } from "react-router-dom"
+
 //HOOKS
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useMemo } from "react"
+import { useRef } from "react"
+
 //Context
 import { useContextAPI } from "../Context/ContextAPI"
+
 //Components
 import TaskRow from "../components/TaskRow"
 
 const statusOrder = { "To do": 0, "Doing": 1, "Done": 2 };
 
+ 
 
 export default function TaskList(){
     //Importo il value del context
@@ -18,6 +23,21 @@ export default function TaskList(){
     //Stati per l'ordinamento delle task
     const [sortBy ,setSortBy] = useState("createdAt")
     const [sortOrder, setSortOrder] = useState(1)
+
+    //Stati per la ricerca
+    const searchQueryRef = useRef()
+    const [debouncedQuery, setDebouncedQuery] = useState("");
+    const debounceTimer = useRef(null);
+
+    //Funzione debounce
+    const handleSearchChange = useCallback((e) => {
+    const value = searchQueryRef.current.value;
+    
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+        setDebouncedQuery(value);
+    }, 500);
+}, []);
     
     //Funzione di ordinamento
     const handleOrder = (column) => {
@@ -29,9 +49,25 @@ export default function TaskList(){
       }
     }
 
+
+    
+
+   
+
+
+
     const sortedTask = useMemo(() =>{
+        let filtered ;
+        if(debouncedQuery !== ""){
+           filtered = tasks.filter((task) => 
+            task.title.toLowerCase().includes(debouncedQuery.toLowerCase())
+            )
+        }else{
+            filtered = tasks
+        }
         
-        return tasks.sort((a,b) => {
+        
+        return filtered.sort((a,b) => {
          let result = 0;
          if(sortBy === "title"){
             result = a.title.localeCompare(b.title)
@@ -43,7 +79,7 @@ export default function TaskList(){
 
          return result * sortOrder
         })
-    } , [tasks , sortBy , sortOrder])
+    } , [debouncedQuery,tasks , sortBy , sortOrder])
 
 
 
@@ -56,7 +92,14 @@ export default function TaskList(){
                 <h1 className="tasklist-title">Task Manager</h1>
                 <p className="tasklist-subtitle">Visualizza e gestisci le tue attività</p>
             </header>
-           
+
+               <div>
+                <input type="text"
+                placeholder="Cerca.."
+                ref={searchQueryRef}
+                onChange={handleSearchChange}
+                />
+               </div>
 
               <NavLink className="add-task-link" to="AddTask">Aggiungi una task</NavLink>
 
