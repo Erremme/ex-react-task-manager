@@ -63,6 +63,38 @@ function useTask(){
         setTasks((prev) => prev.filter( t => t.id !== taskId))
            
     }
+
+    async function removeMultipleTasks(taskIds) {
+        const deleteRequests = taskIds.map((taskId) => {
+            return(fetch(`${url}/tasks/${taskId}`, {method: "DELETE" })
+            .then(res => res.json()) 
+)
+            
+        })
+
+        const results = await Promise.allSettled(deleteRequests)
+
+        const fullfilledDelitions = []
+        const rejectedDelitions =[]
+
+        results.forEach((result , index) => {
+            const taskId = taskIds[index]
+            if(result.status === "fulfilled" && result?.value.success){
+                fullfilledDelitions.push(taskId)
+            }else{
+                rejectedDelitions.push(taskId)
+            }
+        })
+
+        if(fullfilledDelitions.length > 0 ){
+            setTasks((prev) => 
+                prev.filter(t => !fullfilledDelitions.includes(t.id)))
+        }
+
+        if(rejectedDelitions.length > 0){
+            throw new Error(`Errore nell' eliminazione delle task : ${rejectedDelitions.join(",")}`)
+        }
+    }
     
     //funzione per modificare una task
     async function updateTask(updatedTask) {
@@ -79,8 +111,11 @@ function useTask(){
         setTasks((prev) => prev.map((t) => t.id === task.id ? task : t ))
 
     }
+
+
+   
     
-    return {tasks , addTask , removeTask , updateTask}
+    return {tasks , addTask , removeTask , updateTask , removeMultipleTasks}
 }
 
 export default useTask

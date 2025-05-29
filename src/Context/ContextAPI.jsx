@@ -10,11 +10,11 @@ const ContextAPI = createContext()
 function ContextAPIProvider({children}){
     
     //Destrutturazione dei valori dal custom Hook
-    const {tasks , addTask , removeTask , updateTask}= useTasks()
+    const {tasks , addTask , removeTask , updateTask , removeMultipleTasks }= useTasks()
     
   
     return(
-        <ContextAPI.Provider value={{tasks , addTask , removeTask , updateTask}} >
+        <ContextAPI.Provider value={{tasks , addTask , removeTask , updateTask , removeMultipleTasks}} >
             {children}
         </ContextAPI.Provider>
     )

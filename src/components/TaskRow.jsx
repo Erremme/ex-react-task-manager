@@ -15,20 +15,27 @@ const getStatusColor = (status) => {
 };
 
 //Ho usato memo per evitare re-render inutili all' aggiornamento dello stato
-const TaskRow = memo(({title, status ,createdAt, id}) => {
+const TaskRow = memo(({task, checked, onToggle}) => {
     console.log("rerender")
     return(
             <tr className="task-row" >
                 <td className="task-cell">
-                   <Link to={`/task/${id}`} style={{ color: "#1976d2", textDecoration: "underline" }}>
-                    {title}
+                  <input 
+                  type="checkbox"
+                  checked = {checked}
+                  onChange={() => onToggle(task.id)}
+                  />
+                </td>
+                <td className="task-cell">
+                   <Link to={`/task/${task.id}`} style={{ color: "#1976d2", textDecoration: "underline" }}>
+                    {task.title}
                 </Link> 
                     
                 </td>
-                <td className="task-cell" style={{background: getStatusColor(status)}}> 
-                {status}
+                <td className="task-cell" style={{background: getStatusColor(task.status)}}> 
+                {task.status}
                 </td>
-                <td className="task-cell">{dayjs(createdAt).format('DD/MM/YYYY HH:mm:ss')} </td>
+                <td className="task-cell">{dayjs(task.createdAt).format('DD/MM/YYYY HH:mm:ss')} </td>
             </tr>
     )
 })

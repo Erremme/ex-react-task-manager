@@ -75,6 +75,10 @@ nav a.active, nav a:hover {
     transition: border 0.2s;
 }
 
+.search-button-container .remove-task-btn{
+    margin: 0;
+}
+
 .search-button-container input[type="text"]:focus {
     border: 1.5px solid #1976d2;
     outline: none;

@@ -26,7 +26,7 @@ const statusOrder = { "To do": 0, "Doing": 1, "Done": 2 };
 
 export default function TaskList(){
     //Importo il value del context
-    const {tasks} = useContextAPI()
+    const {tasks , removeMultipleTasks} = useContextAPI()
 
     //Stati per l'ordinamento delle task
     const [sortBy ,setSortBy] = useState("createdAt")
@@ -35,6 +35,19 @@ export default function TaskList(){
     //Stati per la ricerca
   
     const [searchQuery, setSearchQuery] = useState("");
+
+    const [selectedTaskIds , setSelectedTaskIds] = useState([])
+    
+    const toggleSelection = (taskId) => {
+
+     if(selectedTaskIds.includes(taskId)){
+        setSelectedTaskIds((prev) => prev.filter(id => id !== taskId))
+
+    }else{
+        setSelectedTaskIds((prev) =>  [...prev , taskId])
+
+    }
+}
    
 
     const debounceSetSearchQuery = useCallback( debounce(setSearchQuery, 500),[])
@@ -75,6 +88,18 @@ export default function TaskList(){
         })
     } , [searchQuery,tasks , sortBy , sortOrder])
 
+    const handleDelete = async () => {
+       try{
+       await removeMultipleTasks(selectedTaskIds)
+       alert("Task eliminate con successo")
+       setSelectedTaskIds([])
+
+       }catch(error){
+        console.error(error)
+        alert(error.message)
+       }
+    }
+
 
 
     return(
@@ -94,8 +119,14 @@ export default function TaskList(){
                 
                 onChange={(e) =>debounceSetSearchQuery(e.target.value)}
                 />
+
+                {selectedTaskIds.length > 0 && (
+                <button className="remove-task-btn" onClick={  handleDelete}>Elimina Selezionate</button>
+              )}
                 
                </div>
+
+              
 
               
 
@@ -103,6 +134,7 @@ export default function TaskList(){
                 <table className="task-table">
                     <thead>
                         <tr>
+                            <th></th>
                             <th onClick={() =>handleOrder("title")} >Nome</th>
                             <th onClick={() =>handleOrder("status")}>Stato</th>
                             <th onClick={() => handleOrder("createdAt")}>Data di Creazione</th>
@@ -112,10 +144,9 @@ export default function TaskList(){
                         {FilteredAndSortedTask?.map((task) => (
                             <TaskRow 
                             key={task.id}
-                            id={task.id}
-                            title= {task.title}
-                            status = {task.status}
-                            createdAt= {task.createdAt}
+                            task ={task}
+                            checked ={selectedTaskIds.includes(task.id)}
+                            onToggle = {toggleSelection}
                             
                             />
                         ))}
