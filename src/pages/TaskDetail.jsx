@@ -26,17 +26,18 @@ export default function TaskDetail() {
    //Recupero l'id dalla url
    const {id}= useParams();
 
+   //useNavigate per navigare tra le pg
    const navigate = useNavigate()
 
     //Cerco la task con l'id corrispondente
-
     const task = tasks.find((task) => Number(task.id) === Number(id));
 
-    //Variabile per gestire la visibilità del modal
+    //Variabili di stato per gestire la visibilità delle modali
     const [showModal, setShowModal] = useState(false);
-
     const [showEditModal, setShowEditModal] = useState(false);
 
+
+    //Funzioni per gestile l' eliminazione della singola Task
     const handleDelete = async () => {
      try{
         await  removeTask(task.id)
@@ -47,6 +48,8 @@ export default function TaskDetail() {
      }
     }
 
+
+    //Funzioni per gestile la modifica della singola Task
     const handleUpdate = async  (updatedTask) =>  {
         try {
             await updateTask(updatedTask)
@@ -59,11 +62,15 @@ export default function TaskDetail() {
 
     }
 
+     //Controllo per verificare che task esista
+    if (!task) {
+      return <div>Task non trovata..</div>;
+}
+
     return(
             <div className="taskdetail-container">
-            
-            
-            <NavLink className="back-link" to="/">← Torna alla lista</NavLink>
+
+                <NavLink className="back-link" to="/">← Torna alla lista</NavLink>
             <div className="taskdetail-card">
                 <h2 className="taskdetail-title">{task.title}</h2>
                 <div className="taskdetail-info">
@@ -83,14 +90,18 @@ export default function TaskDetail() {
             <div className="btn-container">
             <button onClick={() => setShowEditModal(true)} className="edit-task-btn">Modifica Task</button>
             <button onClick={() => setShowModal(true)} className="remove-task-btn">Rimuovi Task</button>
+
+            {/*Componente Modal per l'eliminazione della Task */}
               <Modal
                 title="Rimuovi Task"
                 content="Sei sicuro di voler rimuovere questa task?"
                 show={showModal}
                 onClose={() => setShowModal(false)}
                 onConfirm={ handleDelete}
-                confirmText="Rimuovi"/>
-
+                confirmText="Rimuovi"
+                />
+              
+            {/*Componente Modal per la modifica della task */}
                 <EditTaskModal 
                 show={showEditModal}
                 onClose={() => setShowEditModal(false)}
@@ -101,10 +112,6 @@ export default function TaskDetail() {
             </div>
         </div>
     )
-
-
-
-
 
 
 }

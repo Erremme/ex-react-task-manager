@@ -1,6 +1,6 @@
 
 import ReactDOM from 'react-dom';
-
+ //Componente Modal con React.createPorta , document.body per non renderlo dipendende dal componente padre
 export default function Modal({title ,content,show , onClose, onConfirm ,confirmText = "Conferma"}){
    return ReactDOM.createPortal (
       <div className={`modal ${show ? 'show' : ''}`}>

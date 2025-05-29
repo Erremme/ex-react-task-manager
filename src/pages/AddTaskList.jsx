@@ -1,11 +1,13 @@
-//Ract-router-dom
-import { NavLink } from "react-router-dom";
 
 //React HOOKS
 import { useState , useRef, useMemo } from "react";
 
 //Context
 import {useContextAPI} from "../Context/ContextAPI";
+
+ //Simboli per verificare se il campo è corretto
+    const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/`;
+
 
 export default function AddTaskList(){
     //Variabile di stato per input controllato
@@ -15,20 +17,21 @@ export default function AddTaskList(){
     const descriptionRef = useRef(null);
     const statusRef = useRef(null);
 
+    //Mi predo la funzione dal context
     const { addTask } = useContextAPI();
     
-    //Simboli per verificare se il campo è corretto
-    const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/`;
-
     //Validazione del campo title
     const isTitleValid = useMemo(() => {
       const charValid = !title.split("").some(char => symbols.includes(char));
       return charValid && title.trim().length > 0 
     },[title]);
 
+
+    //Funzione per gestire il submit
    async function handleSubmit (e) {
     e.preventDefault();
     
+    //Controllo della validazione
     if(!isTitleValid ){;
         return;
     }
@@ -50,14 +53,8 @@ export default function AddTaskList(){
      alert(error.message)
     }
 
-
-    
-    
-
-
    }
     
-      
     return(
          <div className="addtask-container">
             
@@ -72,7 +69,8 @@ export default function AddTaskList(){
                         required
                         placeholder="Inserisci il titolo"
                     />
-
+                      
+                      {/*Messaggi che appaiono in base allo stato di isTitleValid  */}
                     {!isTitleValid &&
                         <p style={{color : !isTitleValid  && "red"}}>
                             {!isTitleValid && "Il campo non può essere vuoto e non può contenere caratteri speciali."}
@@ -84,6 +82,9 @@ export default function AddTaskList(){
                             {isTitleValid && "Titolo valido!" }
                         </p>  
                     }
+                
+                      {/*Messaggi che appaiono in base allo stato di isTitleValid  */}
+                  
                 </label>
                 <label>
                     Descrizione:

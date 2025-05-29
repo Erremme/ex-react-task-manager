@@ -10,6 +10,7 @@ import { useContextAPI } from "../Context/ContextAPI"
 //Components
 import TaskRow from "../components/TaskRow"
 
+//Oggetto con all' interno i valori della select
 const statusOrder = { "To do": 0, "Doing": 1, "Done": 2 };
 
  //Funzione debounce
@@ -32,14 +33,14 @@ export default function TaskList(){
     const [sortBy ,setSortBy] = useState("createdAt")
     const [sortOrder, setSortOrder] = useState(1)
 
-    //Stati per la ricerca
-  
+    //Stato per la ricerca
     const [searchQuery, setSearchQuery] = useState("");
 
+    //Stato per la selezione delle task
     const [selectedTaskIds , setSelectedTaskIds] = useState([])
     
+    //Funzione toggle per includere  i nuovi elementi selezionati nell array selectedTaskIds
     const toggleSelection = (taskId) => {
-
      if(selectedTaskIds.includes(taskId)){
         setSelectedTaskIds((prev) => prev.filter(id => id !== taskId))
 
@@ -49,7 +50,7 @@ export default function TaskList(){
     }
 }
    
-
+   //Funzione con useCallback e debounce per ritardare il rendering alla ricerca
     const debounceSetSearchQuery = useCallback( debounce(setSearchQuery, 500),[])
 
    
@@ -67,7 +68,7 @@ export default function TaskList(){
     }
 
 
-
+    //UseMemo per ordinare e filtrare le task 
     const FilteredAndSortedTask = useMemo(() =>{
         
         return [...tasks]
@@ -88,6 +89,8 @@ export default function TaskList(){
         })
     } , [searchQuery,tasks , sortBy , sortOrder])
 
+
+    //Funzione per gestire l' eliminazione multipla delle tasks
     const handleDelete = async () => {
        try{
        await removeMultipleTasks(selectedTaskIds)
@@ -116,19 +119,15 @@ export default function TaskList(){
 
                 <input type="text"
                 placeholder="Cerca.."
-                
                 onChange={(e) =>debounceSetSearchQuery(e.target.value)}
                 />
 
+               {/*Bottone che appare solo se ci sono task selezionate */}
                 {selectedTaskIds.length > 0 && (
                 <button className="remove-task-btn" onClick={  handleDelete}>Elimina Selezionate</button>
               )}
                 
                </div>
-
-              
-
-              
 
               <div className="table-wrapper" >
                 <table className="task-table">
